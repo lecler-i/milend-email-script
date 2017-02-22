@@ -1,11 +1,24 @@
 <?php
+/* Require composer autoloader */
+require __DIR__ . '/vendor/autoload.php';
 
-$hostname = '{imap.gmail.com:993/imap/ssl}INBOX';
-$username = 'ttest@milend.com';
-$password = 'thomas1234';
+/* Infos for mailbox to scan */
+$in_hostname = '{imap.gmail.com:993/imap/ssl}INBOX';
+$in_username = 'ttest@milend.com';
+$in_password = 'thomas1234';
+
+/* Infos for mailbox to send message from */
+$out_username = 'ttest@milend.com';
+$out_password = 'thomas1234';
+
+/* Connect for outgoing email address */
+$transport = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, "ssl")
+  ->setUsername($out_username)
+  ->setPassword($out_password);
+$mailer = Swift_Mailer::newInstance($transport);
 
 /* try to connect */
-$inbox = imap_open($hostname,$username,$password) or die('Cannot connect to Gmail: ' . imap_last_error());
+$inbox = imap_open($in_hostname, $in_username, $in_password) or die('Cannot connect to Gmail: ' . imap_last_error());
 
 /* grab emails */
 $emails = imap_search($inbox,'ALL');
@@ -35,9 +48,14 @@ if($emails) {
 
       /* Check for customer email in the body */
       if (preg_match("/\*Email\* (.*@.*\..*)/", $message, $matches)) {
+        if ($overview[0]->seen == false) {
+          /* We encounter a seen message... stopping the script */
+          echo 'Aldready processed message reached... Stopping';
+          break;
+        }
 
         /* Processing the email */
-        found_email_match($overview, $message, $matches[1]);
+        found_email_match($overview[0], $message, $matches[1]);
       }
     }
   }
@@ -45,7 +63,24 @@ if($emails) {
 
 /* Function that process a email matching with customer infos */
 function found_email_match($emailInfos, $content, $customer_email) {
-  printf("Email is : %s\n", $customer_email);
+  echo "Processing email : " . $emailInfos->msgno . "\n";
+  echo "\tDate :\t\t" . $emailInfos->date . "\n";
+  echo "\tCustomer :\t" . $customer_email . "\n";
+
+  /* To access $mailer object (used to send emails) */
+  global $mailer;
+
+  /* Create the outgoing email */
+  $message = Swift_Message::newInstance()
+    ->setSubject('RE: Your home loan inquiry')
+    ->setFrom(['info@milend.com' => 'John Doe'])
+    ->setTo(['degnus@gmail.com'])
+    ->setBody('Here is the message itself')
+    ->addPart('<q>Here is the message itself</q>', 'text/html') ;
+
+  /* Sending the email */
+  $result = $mailer->send($message);
+  echo "Done.\n";
 }
 
 /* close the connection */
