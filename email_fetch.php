@@ -46,29 +46,41 @@ if($emails) {
       $message = imap_fetchbody($inbox,$email_number,1);
       $matches = [];
 
-      /* Check for customer email in the body */
-      if (preg_match("/\*Email\* (.*@.*\..*)/", $message, $matches)) {
-        if ($overview[0]->seen == false) {
-          /* We encounter a seen message... stopping the script */
-          echo 'Aldready processed message reached... Stopping';
-          break;
+      /* Loading the customer infos from the body */
+      if (preg_match_all("/\*(.*)\* (.*)/", $message, $matches)) {
+        $customer_data = array_combine($matches[1], $matches[2]);
+        
+        /* If customer Email is found */
+        if (empty($customer_data["Email"]) == false) {
+          if ($overview[0]->seen == false) {
+            /* We encounter a seen message... stopping the script */
+            echo 'Aldready processed message reached... Stopping';
+            break;
+          }
+          /* Processing the email */
+          found_email_match($overview[0], $message, $customer_data);
         }
-
-        /* Processing the email */
-        found_email_match($overview[0], $message, $matches[1]);
       }
     }
   }
 }
 
 /* Function that process a email matching with customer infos */
-function found_email_match($emailInfos, $content, $customer_email) {
+function found_email_match($emailInfos, $content, $customer_data) {
+  $email = $customer_data["Email"];
+  $name = $cusomer_data["First Name"];
+
+  /* If no name found, we set the name as the email */
+  if (empty($name)) $name = $email;
+
   echo "Processing email : " . $emailInfos->msgno . "\n";
   echo "\tDate :\t\t" . $emailInfos->date . "\n";
-  echo "\tCustomer :\t" . $customer_email . "\n";
+  echo "\tCustomer :\t" . $email . "\n";
 
   /* To access $mailer object (used to send emails) */
   global $mailer;
+
+  $html_body = file_get_contents('./email.html');
 
   /* Create the outgoing email */
   $message = Swift_Message::newInstance()
@@ -76,7 +88,7 @@ function found_email_match($emailInfos, $content, $customer_email) {
     ->setFrom(['info@milend.com' => 'John Doe'])
     ->setTo(['degnus@gmail.com'])
     ->setBody('Here is the message itself')
-    ->addPart('<q>Here is the message itself</q>', 'text/html') ;
+    ->addPart($html_body, 'text/html') ;
 
   /* Sending the email */
   $result = $mailer->send($message);
