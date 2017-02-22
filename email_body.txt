@@ -1,0 +1,14 @@
+<?php echo $name; ?> I hope this email finds you well!  
+
+We wanted to do a quick followup to the inquiry you had made about refinancing your home.
+MiLEND is a direct mortgage lender who specializes in saving people money.
+Being a direct lender means we lend our own money and can close a loan faster than a mortgage broker or a bank!
+We have hundreds of mortgage programs and we can tailor any of them to fit your needs. 
+Call us at 888-958-0161 to discuss the options available to you!
+If there's a certain time you have available to speak, please reply and let us know.
+
+Thank You,
+MiLEND, Inc.
+
+NMLS ID #148769
+888-958-0161

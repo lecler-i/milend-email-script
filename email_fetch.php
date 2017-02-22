@@ -26,9 +26,6 @@ $emails = imap_search($inbox,'ALL');
 /* if emails are returned, cycle through each... */
 if($emails) {
   
-  /* begin output var */
-  $output = '';
-  
   /* put the newest emails on top */
   rsort($emails);
   
@@ -52,7 +49,7 @@ if($emails) {
         
         /* If customer Email is found */
         if (empty($customer_data["Email"]) == false) {
-          if ($overview[0]->seen == false) {
+          if ($overview[0]->seen == true) {
             /* We encounter a seen message... stopping the script */
             echo 'Aldready processed message reached... Stopping';
             break;
@@ -68,7 +65,7 @@ if($emails) {
 /* Function that process a email matching with customer infos */
 function found_email_match($emailInfos, $content, $customer_data) {
   $email = $customer_data["Email"];
-  $name = $cusomer_data["First Name"];
+  $name = $customer_data["First Name"];
 
   /* If no name found, we set the name as the email */
   if (empty($name)) $name = $email;
@@ -77,18 +74,24 @@ function found_email_match($emailInfos, $content, $customer_data) {
   echo "\tDate :\t\t" . $emailInfos->date . "\n";
   echo "\tCustomer :\t" . $email . "\n";
 
-  /* To access $mailer object (used to send emails) */
-  global $mailer;
-
-  $html_body = file_get_contents('./email.html');
+  /* Getting HTML and plain text body */
+  ob_start();
+  include 'email_body.html';
+  $html_body = ob_get_clean();
+  ob_start();
+  include 'email_body.txt';
+  $txt_body = ob_get_clean();
 
   /* Create the outgoing email */
   $message = Swift_Message::newInstance()
     ->setSubject('RE: Your home loan inquiry')
-    ->setFrom(['info@milend.com' => 'John Doe'])
+    ->setFrom(['info@milend.com'])
     ->setTo(['degnus@gmail.com'])
-    ->setBody('Here is the message itself')
-    ->addPart($html_body, 'text/html') ;
+    ->setBody($txt_body)
+    ->addPart($html_body, 'text/html')
+  ;
+
+  global $mailer;
 
   /* Sending the email */
   $result = $mailer->send($message);
