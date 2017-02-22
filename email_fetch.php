@@ -33,11 +33,11 @@ if($emails) {
   foreach($emails as $email_number) {
     
     /* get information specific to this email */
-    $overview = imap_fetch_overview($inbox,$email_number,0);
+    $overview = imap_fetch_overview($inbox, $email_number, 0);
 
     //var_dump($overview);
     /* If the email is from... */
-    if ($overview[0]->from == "no-reply@leadpoint.com" || true) {
+    if ($overview[0]->from == "no-reply@leadpoint.com") {
 
       /*Get the body of the email */
       $message = imap_fetchbody($inbox,$email_number,1);
@@ -86,7 +86,7 @@ function found_email_match($emailInfos, $content, $customer_data) {
   $message = Swift_Message::newInstance()
     ->setSubject('RE: Your home loan inquiry')
     ->setFrom(['info@milend.com'])
-    ->setTo(['degnus@gmail.com'])
+    ->setTo([$email])
     ->setBody($txt_body)
     ->addPart($html_body, 'text/html')
   ;
