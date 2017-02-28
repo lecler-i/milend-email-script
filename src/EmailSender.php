@@ -78,7 +78,7 @@ class EmailSender
       $message = Swift_Message::newInstance()
         ->setSubject('RE: Your home loan inquiry')
         ->setFrom(['info@milend.com'])
-        ->setTo(['test@thomas.sh'])
+        ->setTo([$emailAddress])
         ->setBody($txt_body)
         ->addPart($html_body, 'text/html')
       ;
