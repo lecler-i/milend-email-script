@@ -31,6 +31,17 @@ username = "info@milend.com"
 password = "password"
 ```
 
+####Inbox config
+
+You will have to create a new Label named "Processed", where all the email aldready processed will be moved.
+In your Email Inbox left menu, click on "Create new label"
+
+![Gmail Label](http://c.thomas.sh/index.php/apps/files_sharing/ajax/publicpreview.php?x=1896&y=508&a=true&file=ocss_2017-02-28_18.44.48.png&t=2XKG4rxHuRNpWv8&scalingup=0)
+
+And set the name as
+
+>Processed
+
 ####Start the script
 
 ```shell
