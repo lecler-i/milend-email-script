@@ -13,9 +13,7 @@ class Inbox
   {
     global $logger;
     $this->options = $options;
-  
 
-    $this->fetchOverviewFlags = ($options['dry-run'] ? null : FT_PEEK);
     /* try to connect */
     $logger->info('Connection to inbox : ' . $username);
     $this->inbox = imap_open($host, $username, $password);
@@ -55,7 +53,7 @@ class Inbox
           $logger->debug('Reading email', (array)$overview[0]);
 
           /*Get the body of the email */
-          $message = imap_fetchbody($this->inbox, $email_number, 1, $tis->fetchOverviewFlags);
+          $message = imap_fetchbody($this->inbox, $email_number, 1, FT_PEEK);
           $matches = [];
 
           /* Loading the customer infos from the body */
@@ -85,11 +83,6 @@ class Inbox
     }
     return $this->results;
   }
-
-  // private function getMessageLabels($msgno) {
-  //   $headers = imap_rfc822_parse_headers(imap_fetchheader($this->inbox , $msgno));
-  //   var_dump($headers);
-  // }
 
   private function emailMatch($emailInfos, $content, $customerData)
   {
