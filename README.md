@@ -20,13 +20,13 @@ https://getcomposer.org/
 Edit the file config.ini to set the credentials for the ingoing/outgoing emails.
 
 ```config
-***REMOVED***
-***REMOVED***
+[inbox]
+imap = "{imap.gmail.com:993/imap/ssl}INBOX"
 username = "to-scan@milend.com"
 password = "password"
 
-***REMOVED***
-***REMOVED***
+[outgoing]
+host = "smtp.gmail.com"
 username = "info@milend.com"
 password = "password"
 ```
