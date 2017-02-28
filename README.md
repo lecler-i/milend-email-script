@@ -3,6 +3,7 @@
 # Milend Email Script
 
 A PHP script that will scan a Inbox and send a follow-up email to a possible customer.
+
 You will find logs in the directory "logs"
 
 ## Installing / Getting started
@@ -10,9 +11,10 @@ You will find logs in the directory "logs"
 A quick introduction of the minimal setup you need to get the script up &
 running.
 
-###Get composer
+####Get composer
 
 This project require "Composer" a package manager, to install various dependencies.
+
 https://getcomposer.org/
 
 ####Configuration
