@@ -3,6 +3,7 @@
 # Milend Email Script
 
 A PHP script that will scan a Inbox and send a follow-up email to a possible customer.
+
 You will find logs in the directory "logs"
 
 ## Installing / Getting started
@@ -10,9 +11,10 @@ You will find logs in the directory "logs"
 A quick introduction of the minimal setup you need to get the script up &
 running.
 
-###Get composer
+####Get composer
 
 This project require "Composer" a package manager, to install various dependencies.
+
 https://getcomposer.org/
 
 ####Configuration
@@ -30,6 +32,17 @@ host = "smtp.gmail.com"
 username = "info@milend.com"
 password = "password"
 ```
+
+####Inbox config
+
+You will have to create a new Label named "Processed", where all the email aldready processed will be moved.
+In your Email Inbox left menu, click on "Create new label"
+
+![Gmail Label](http://c.thomas.sh/index.php/apps/files_sharing/ajax/publicpreview.php?x=1896&y=508&a=true&file=ocss_2017-02-28_18.44.48.png&t=2XKG4rxHuRNpWv8&scalingup=0)
+
+And set the name as
+
+>Processed
 
 ####Start the script
 
