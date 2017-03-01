@@ -88,7 +88,7 @@ class EmailSender
         $result = $this->mailer->send($message);
       }
       $logger->info('Email sent with success');
-      return true;
+      return $this->options['dry-run'] == false;
     } catch (Exception $e) {
       $logger->error($e->getMessage());
       return false;
