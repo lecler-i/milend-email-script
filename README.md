@@ -17,6 +17,10 @@ This project require "Composer" a package manager, to install various dependenci
 
 https://getcomposer.org/
 
+####PHP requirements
+The following modules should be enabled
+> php_mbstring php_imap php_openssl
+
 ####Configuration
 
 Edit the file config.ini to set the credentials for the ingoing/outgoing emails.
@@ -46,14 +50,23 @@ And set the name as
 
 ####Start the script
 
+Install the depencies
+
 ```shell
-composer install
-php cli.php --help  # prints the help
+php composer.phar install
+```
+
+Run the script
+
+```shell
 php cli.php --dry-run # launch the script without sending the messages (for test purpose)
 php cli.php --log-level debug # set log to debug
 ```
 
-Here you should say what actually happens when you execute the code above.
+You can find logs in the "logs/" folder.
+
+Adjust the log-level (to debug for more infos) by excuting with the following flag
+> --log-level debug
 
 ## Developing
 
