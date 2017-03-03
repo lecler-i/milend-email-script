@@ -1,6 +1,6 @@
 <?php
 /* Require composer autoloader */
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . DIRECTORY_SEPARATOR . 'vendor'. DIRECTORY_SEPARATOR . 'autoload.php';
 require __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Inbox.php';
 require __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'EmailSender.php';
 
@@ -8,6 +8,12 @@ $options = parseArguments();
 $config = parse_ini_file('config.ini', true);
 
 $logger = new Katzgrau\KLogger\Logger(__DIR__ . DIRECTORY_SEPARATOR . 'logs', $options['log-level']);
+
+if (function_exists('imap_open') == false) {
+    $logger->error('IMAP functions are not available. Please enable the php module "imap".');
+    echo 'IMAP functions are not available.' . PHP_EOL;
+    exit(1);
+}
 
 $inbox = new Inbox(
   $config['inbox']['imap'],
