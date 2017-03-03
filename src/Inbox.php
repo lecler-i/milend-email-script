@@ -61,7 +61,7 @@ class Inbox
             /* Couldn't find a proprely formatted table with user data */
             $logger->debug('No customer data found');
           } else {
-            $customer_data = array_combine($matches[1], $matches[2]);
+            $customer_data = array_combine($matches[1], array_map('trim', $matches[2]));
 
             /* If customer Email is found */
             if (empty($customer_data["Email"])) {
