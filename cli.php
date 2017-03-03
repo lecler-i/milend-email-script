@@ -5,7 +5,7 @@ require __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Inbox.php
 require __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'EmailSender.php';
 
 $options = parseArguments();
-$config = parse_ini_file('config.ini', true);
+$config = parseConfig('config.ini');
 
 $logger = new Katzgrau\KLogger\Logger(__DIR__ . DIRECTORY_SEPARATOR . 'logs', $options['log-level']);
 
@@ -33,7 +33,7 @@ $emailSender = new EmailSender(
 if ($inbox->loggedIn() && $emailSender->loggedIn()) {
 
   echo 'Scanning inbox...';
-  $emails = $inbox->scanEmails('/.*/', true);
+  $emails = $inbox->scanEmails($config['rules']['from'], true);
   echo ' Done !' . PHP_EOL;
 
   echo count($emails) . ' email(s) to process ...';
@@ -69,6 +69,11 @@ function parseArguments() {
     'log-level' => $cli['log-level']
   ];
   return $options;
+}
+
+function parseConfig($file) {
+  $config = parse_ini_file('config.ini', true);
+  return $config;
 }
 
 //print_r($emails);
