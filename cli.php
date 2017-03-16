@@ -33,7 +33,7 @@ $emailSender = new EmailSender(
 if ($inbox->loggedIn() && $emailSender->loggedIn()) {
 
   echo 'Scanning inbox...';
-  $emails = $inbox->scanEmails($config['rules']['from'], true);
+  $emails = $inbox->scanEmails($config['rules']['from_address'], true);
   echo ' Done !' . PHP_EOL;
 
   echo count($emails) . ' email(s) to process ...';
